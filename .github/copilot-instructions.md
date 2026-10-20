@@ -187,6 +187,14 @@ argocd app get app-name                       # Check ArgoCD application status
 
 - Commit encrypted secret files (`.sops.yaml`) normally
 - Never commit unencrypted secrets—betterleaks will block it
+- Follow **Conventional Commits** format for all commit messages:
+  - Format: `type(scope): description`
+  - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, `ci`
+  - Example: `feat(k3s): add monitoring stack deployment`
+  - Example: `fix(sops): update age key rotation policy`
+  - Example: `docs(backup): add velero recovery procedures`
+  - Multi-line: Use body for detailed explanation after blank line
+  - Include `Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>` trailer
 - `.gitignore` should include:
   - `*.env` files (if used for local development)
   - Nix build artifacts: `result/`, `.dirlocal`
