@@ -21,15 +21,22 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # networking.hostName = "arwen"; # Define your hostname.
-  # networking.wireless.enable = false;  # Disabes wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  networking.hostName = "arwen"; # Define your hostname.
+  networking.domain = "pertl.dev";
+  networking.wireless.enable = false;  # Disabes wireless support via wpa_supplicant.
+  networking.interfaces.enp1s0.ipv4.addresses = [ {
+	  address = "10.25.1.254";
+	  prefixLength = 24;
+	} ];
+  networking.defaultGateway = "10.25.1.1";
+  networking.nameservers = [ "10.25.1.1" ];
+  networking.dhcpcd.enable = false;
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager.enable = false;
+  networking.networkmanager.settings = {
+    wifi.enabled = false;   # NM ignores all Wi-Fi devices
+  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
