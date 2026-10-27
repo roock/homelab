@@ -36,6 +36,16 @@ sudo nixos-rebuild switch --flake ./nix#<hostname>
 
 Run `nix flake check` from `nix/` to validate the flake before rebuilding.
 
+## Home Manager
+
+User environments are managed with [Home Manager](https://github.com/nix-community/home-manager), which is wired in as a NixOS module in `nix/flake.nix`.
+
+- `nix/home/<user>.nix` - the Home Manager config for a user (currently `roock`). It applies to every server that imports the user in `nix/modules/common.nix`.
+- Set `home-manager.users.<user>` in `nix/modules/common.nix` to point at that file.
+- Per-server user settings can go in `nix/servers/<hostname>/configuration.nix` under `home-manager.users.<user>`.
+- Home Manager follows the system `nixpkgs` input, and `useGlobalPkgs` is enabled, so user packages use the same nixpkgs as the system.
+- Changes apply with the normal rebuild command (see above). No separate `home-manager switch` is needed.
+
 ## Updating the flake lock
 
 Run from `nix/`:

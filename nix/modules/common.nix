@@ -1,5 +1,5 @@
 # Settings shared by every server in this repository.
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -28,18 +28,57 @@
     variant = "";
   };
 
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    bash # required for copilot
+    curl
+    devenv
+    dig
+    git
+    gnupg
+    htop
+    lm_sensors
+    nvd
+    niv
+    smartmontools
+    tmux
+    vim
+    wget
+  ];
+
+  programs.zsh.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."roock" = {
     isNormalUser = true;
     description = "Roman Pertl";
     extraGroups = [ "networkmanager" "wheel" ];
-       openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE14M+Iid87Kcm8JL5V7qqgWobsfSKB7NZEFbXeevkrn rpertl@PC-WIEN-97"
-        "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBE7qZOeBeQn1bMBa/CB9QfwhOpGtidLGMojoNg6QkQ7tW03ZKwHos7fNmeN8/tDoLjsQz4Sd01BRkHUcdw6xUwY= roman.pertl@secretive.MBP-04.local"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIMt7RsXQszuAxz8ysgDXmvV+DTdi/q+gCRBqaVHn/47 cardno:19_779_699"
-      ];
-    packages = with pkgs; [];
+      openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE14M+Iid87Kcm8JL5V7qqgWobsfSKB7NZEFbXeevkrn rpertl@PC-WIEN-97"
+      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBE7qZOeBeQn1bMBa/CB9QfwhOpGtidLGMojoNg6QkQ7tW03ZKwHos7fNmeN8/tDoLjsQz4Sd01BRkHUcdw6xUwY= roman.pertl@secretive.MBP-04.local"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIMt7RsXQszuAxz8ysgDXmvV+DTdi/q+gCRBqaVHn/47 cardno:19_779_699"
+    ];
+    packages = with pkgs; [
+      bat
+      glab
+      github-copilot-cli
+      betterleaks
+      inxi
+      ipcalc
+      ncdu
+      pwgen
+      python3
+      whois
+      tig
+    ];
   };
+
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+  home-manager.users.roock = import ../home/roock.nix;
+
+  users.defaultUserShell = pkgs.zsh;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
@@ -52,10 +91,4 @@
   # Do not open the firewall for the OpenSSH service on all servers.
   # This service will be opened on each server individually if needed.
   services.openssh.openFirewall = false;
-
-  #environment.systemPackages = with pkgs; [
-  #  git
-  #  htop
-  #  kubectl
-  #];
 }
