@@ -1,0 +1,8 @@
+pre-commit:
+  commands:
+    betterleaks:
+      run: betterleaks git --pre-commit --staged --redact --no-banner
+    nix-flake-check:
+      glob: "nix/**/*"
+      root: "nix/"
+      run: nix --extra-experimental-features 'nix-command flakes' flake check
