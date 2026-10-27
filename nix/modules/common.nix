@@ -30,6 +30,7 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
     bash # required for copilot
     curl
