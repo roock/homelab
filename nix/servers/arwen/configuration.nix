@@ -38,6 +38,8 @@
     wifi.enabled = false;   # NM ignores all Wi-Fi devices
   };
 
+  powerManagement.cpuFreqGovernor = "powersave";
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
